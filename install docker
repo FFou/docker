@@ -22,4 +22,12 @@ sudo systemctl restart docker
 https://github.com/docker/compose/releases
 
 
+zzjh@c218:~/aria2$ sudo cat /etc/docker/daemon.json
+{
+  "registry-mirrors": ["https://usjdiouo.mirror.aliyuncs.com"],
+  "insecure-registries":["registry:5000"],
+  "log-driver": "json-file",
+  "log-opts": {"max-size": "10m", "max-file": "3"}
+
+}
 
