@@ -1,0 +1,41 @@
+# 切换root权限
+  sudo -i
+ 
+# 配置文件 /etc/docker/daemon.json
+# 运行中的容器/var/lib/docker/containers
+# docker配置文件说明https://www.cnblogs.com/breezey/p/8812071.html
+
+# 创建网络命令
+sudo docker network create --driver=overlay --attachable zhejiang
+
+# 部署和关闭docker-compose命令,进入docker-compose.yml文件所在目录。
+sudo docker-compose -p kafka -f kafka-compose.yml up -d --scale kafka=3
+sudo docker-compose -f kafka-compose.yml -p dpi-filter down
+
+# 部署和关闭集群命令
+sudo docker stack deploy -c zj-docker-compose.yml zhejiang
+sudo docker stack down zhejiang
+
+
+# 删除状态为Created状态的容器
+sudo docker rm -f $(sudo docker ps -a | grep Created | awk '{ print $1 }')
+sudo docker rm -f $(sudo docker ps -a | grep Exited | awk '{ print $1 }')
+
+# 查看容器日志
+sudo docker logs -f --tail=10 containerID
+sudo docker service logs -f --tail=10 containerID
+
+# 进入容器
+sudo docker exec -it containerID /bin/bash
+sudo docker exec -it containerID /bin/sh
+sudo docekr attach containerID
+
+# 查看集群服务状态
+sudo docker service ls
+
+# 查看节点状态
+sudo docker node ls
+sudo docker node update nodeID
+
+
+
